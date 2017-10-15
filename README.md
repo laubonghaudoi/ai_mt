@@ -12,7 +12,7 @@
 
 - jieba 0.39
 
-#### 步骤
+### 步骤
 
 1. 从官网下载训练集`ai_challenger_translation_train_20170912.zip`及验证集`ai_challenger_translation_validation_20170912.zip`。然后解压并复制如下
     ```bash
@@ -23,7 +23,13 @@
         /ai_challenger_translation_validation_20170912
             valid.en-zh.en.sgm
             valid.en-zh.zh.sgm
-    /train
+    /prepare
+        ...
+    /outputs
+        ...
+    /score
+        ...
+    /tools
         ...
     ```
 1. 预处理数据，运行以下命令
@@ -42,7 +48,23 @@
     1. 运行`./train/prepare_data/tokenizer.perl`将英文训练集和验证集tokenize并保存至`train.en`和`valid.en`
     1. 运行`./train/prepare_data/build_dictionary.py`建立中英文训练集词表并保存至`vocab.en`和`vocab.zh`
     1. 运行`./train/prepare_data/generate_vocab_from_json.py`去除训练集中低频词
+1. 预处理完毕后，`./prepare`路径如下：
+    ```bash
+    prepare_data/
+        ...
+    t2t_data/
+        # 以下为预处理完毕后文件，可直接输入模型训练
+        train.en    # tokenize后英文训练集
+        train.zh    # 分词后中文训练集
+        valid.en    # tokenize后英文验证集
+        valid.zh    # 分词后中文验证集
+        vocab.en    # 英文训练集词表
+        vocab.zh    # 中文训练集词表
+        # 以下为临时文件，训练中不会用到
+        valid.en-zh.en  # 去除xml后中文验证集
+        valid.en-zh.zh  # 去除xml后英文验证集
 
+    ```
 ## 训练模型
 
 
@@ -55,24 +77,37 @@
 [From Source](https://github.com/pytorch/pytorch#from-source)
 [Requirements and Installation](https://github.com/facebookresearch/fairseq-py#requirements-and-installation)
 
-#### 步骤
+### 步骤
+
+**已忽略**，为作下一步示范，翻译输出保存至纯文本文件`outputs/out1/out`。
 
 ## 测试提交
 
 本部分全部运行于python 2.7和perl 5环境。
 
-利用`valid.en`输入，现有文件
+每次实验结果均保存于`./outputs/`。为作示范，现有一次实验结果`outputs/ex1/`，内含文件：
 
-- 翻译后纯文本文件 `./output/out1`
-- 中文参考翻译文件`./output/valid.en-zh.zh.sgm`
-- 英文源文件`./output/valid.en-zh.en.sgm`
-
-现须输出可提交文件`./output/out1.sgm`和分数`./output/out1.score`
-
-#### 步骤
-
-直接运行
 ```bash
-chmod 777 run.sh
-./run.sh
+outputs/ex1/
+    out1    # 翻译后纯文本文件
+    valid.en-zh.zh.sgm  # 中文参考翻译文件（标签）
+    valid.en-zh.en.sgm  # 英文源文件 
 ```
+
+现须输出可提交文件`./outputs/ex1/out1.sgm`和分数`./score/out1.score`
+
+### 步骤
+
+直接运行以下代码，即可输出测试结果`./score/out1.bleu`，提交文件即为`out1.sgm`
+```bash
+chmod 777 validate.sh
+./validate.sh
+```
+
+`prepare.sh`原理解释如下：
+
+1. 运行`./tools/wrap_xml.pl`将纯文本翻译输出`out1`转为`out1.sgm`
+1. 运行`./tools/chi_char_segment.pl`将`out1.sgm`和`valid.en-zh.zh.sgm`分割为`out1.seg.sgm`和`valid.en-zh.zh.seg.sgm`，用于下一步计算BLEU
+1. 运行`./tools/mteval-v11b.pl`计算BLEU，输出结果`./score/out1.bleu`
+
+注意以上代码仅作示范，在正式实验时需修改`validate.sh`中的输出路径和实验名再运行
