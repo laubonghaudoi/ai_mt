@@ -104,7 +104,7 @@ chmod 777 validate.sh
 ./validate.sh
 ```
 
-`prepare.sh`原理解释如下：
+`validate.sh`原理解释如下：
 
 1. 运行`./tools/wrap_xml.pl`将纯文本翻译输出`out1`转为`out1.sgm`
 1. 运行`./tools/chi_char_segment.pl`将`out1.sgm`和`valid.en-zh.zh.sgm`分割为`out1.seg.sgm`和`valid.en-zh.zh.seg.sgm`，用于下一步计算BLEU
