@@ -13,10 +13,10 @@ class Config(object):
         self.teacher_forcing_ratio = 0.5
 
         # Train parameters
-        self.n_iters = 75000
+        self.n_iters = 30000
         self.print_every = 1000
         self.plot_every=100
-        self.learning_rate=0.01
+        self.learning_rate=0.005
 
         # Encoder architecture
         self.encoder_hidden_size = 256

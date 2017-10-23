@@ -27,12 +27,16 @@ class Lang:
 def readLangs(lang1, lang2, reverse=False):
     print("Reading lines...")
 
+    lang1_lines = open('prepare/t2t_data/train.%s' % lang1, encoding='utf-8').read().strip().split('\n')
+    lang2_lines = open('prepare/t2t_data/train.%s' % lang2, encoding='utf-8').read().strip().split('\n')
     # Read the file and split into lines
-    lines = open('data/%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
-        read().strip().split('\n')
-
+    #lines = open('train/data/%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
+    #    read().strip().split('\n')
+    assert len(lang1_lines) == len(lang2_lines)
+    n = len(lang1_lines)
+    pairs = [[lang1_lines[l], lang2_lines[l]] for l in range(n)]
     # Split every line into pairs and normalize
-    pairs = [[s for s in l.split('\t')] for l in lines]
+    #pairs = [[s for s in l.split('\t')] for l in lines]
 
     # Reverse pairs, make Lang instances
     if reverse:
