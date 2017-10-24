@@ -27,10 +27,12 @@ class Lang:
 def readLangs(lang1, lang2, reverse=False):
     print("Reading lines...")
 
-    lang1_lines = open('prepare/t2t_data/train.%s' % lang1, encoding='utf-8').read().strip().split('\n')
-    lang2_lines = open('prepare/t2t_data/train.%s' % lang2, encoding='utf-8').read().strip().split('\n')
+    lang1_lines = open('prepare/t2t_data/train.%s' %
+                       lang1, encoding='utf-8').read().strip().split('\n')
+    lang2_lines = open('prepare/t2t_data/train.%s' %
+                       lang2, encoding='utf-8').read().strip().split('\n')
     # Read the file and split into lines
-    #lines = open('train/data/%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
+    # lines = open('train/data/%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
     #    read().strip().split('\n')
     assert len(lang1_lines) == len(lang2_lines)
     n = len(lang1_lines)
@@ -50,21 +52,8 @@ def readLangs(lang1, lang2, reverse=False):
     return input_lang, output_lang, pairs
 
 
-'''
-eng_prefixes = (
-    "i am ", "i m ",
-    "he is", "he s ",
-    "she is", "she s",
-    "you are", "you re ",
-    "we are", "we re ",
-    "they are", "they re "
-)
-'''
-
 def filterPair(p, config):
-    return len(p[0].split(' ')) < config.max_length and \
-        len(p[1].split(' ')) < config.max_length #and \
-        #p[1].startswith(eng_prefixes)
+    return len(p[0].split(' ')) < config.max_length and len(p[1].split(' ')) < config.max_length
 
 
 def filterPairs(pairs, config):

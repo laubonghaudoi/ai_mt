@@ -48,6 +48,7 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
 
     loss = 0
 
+    # Run the encoder
     for ei in range(input_length):
         encoder_output, encoder_hidden = encoder(
             input_variable[ei], encoder_hidden)
@@ -175,7 +176,8 @@ def evaluateRandomly(encoder, decoder, pairs, input_lang, output_lang, config):
         pair = random.choice(pairs)
         print('>', pair[0])
         print('=', pair[1])
-        output_words, attentions = evaluate(encoder, decoder, pair[0], input_lang, output_lang, config)
+        output_words, attentions = evaluate(
+            encoder, decoder, pair[0], input_lang, output_lang, config)
         output_sentence = ' '.join(output_words)
         print('<', output_sentence)
         print('')
