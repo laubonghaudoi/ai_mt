@@ -12,8 +12,9 @@ mkdir -p $DATA_DIR
 # Step 3:
 # Unwrap xml for valid data and test data 
 # Train data are not xml files thus need not unwrapping
-python prepare/unwrap_xml.py $TMP_DIR/translation_validation_20170912/valid.en-zh.zh.sgm >$DATA_DIR/valid.en-zh.zh
-python prepare/unwrap_xml.py $TMP_DIR/translation_validation_20170912/valid.en-zh.en.sgm >$DATA_DIR/valid.en-zh.en
+python prepare/unwrap_xml.py $TMP_DIR/translation_validation_20170912/valid.en-zh.zh.sgm > $DATA_DIR/valid.en-zh.zh
+python prepare/unwrap_xml.py $TMP_DIR/translation_validation_20170912/valid.en-zh.en.sgm > $DATA_DIR/valid.en-zh.en
+python prepare/unwrap_xml.py test/ai_challenger_translation_test_a_20170923.sgm > $DATA_DIR/test_a.en
 
 # Step 4:
 # Chinese words segmentation
@@ -22,8 +23,10 @@ python prepare/jieba_cws.py $DATA_DIR/valid.en-zh.zh > $DATA_DIR/valid.zh
 
 # Step 5:
 # Tokenize and Lowercase English training data
+chmod 777 prepare/tokenizer.perl
 cat $TMP_DIR/translation_train_20170912/train.en | prepare/tokenizer.perl -l en | tr A-Z a-z > $DATA_DIR/train.en
 cat $DATA_DIR/valid.en-zh.en | prepare/tokenizer.perl -l en | tr A-Z a-z > $DATA_DIR/valid.en
+cat $DATA_DIR/test_a.en | prepare/tokenizer.perl -l en | tr A-Z a-z > $DATA_DIR/test_a.en
 
 # Step 6:
 # Bulid Dictionary
