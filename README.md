@@ -70,15 +70,19 @@
 
 训练流程全部运行于python 3.6环境，依赖包有
 
-- pytorch
-- fairseq
+- [pytorch](https://github.com/pytorch/pytorch#from-source)
+- [torchtext](https://github.com/pytorch/text) == 0.1.1
+- [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py)
 
-安装过程见
-[From Source](https://github.com/pytorch/pytorch#from-source)
-[Requirements and Installation](https://github.com/facebookresearch/fairseq-py#requirements-and-installation)
 
 ### 步骤
 
+```bash
+# 预处理数据，生成demo.train.pt, demo.vocab.pt, 
+python nmt/preprocess.py -train_src prepare/t2t_data/train.en -train_tgt prepare/t2t_data/train.zh -valid_src prepare/t2t_data/valid.en -valid_tgt prepare/t2t_data/valid.zh -save_data demo
+# 开始训练
+python nmt/train.py -data data/demo -save_model demo-model
+```
 **已忽略**，为作下一步示范，翻译输出保存至纯文本文件`outputs/ex1/out1`。
 
 ## 测试提交
