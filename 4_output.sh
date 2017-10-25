@@ -8,3 +8,4 @@ python nmt/translate.py \
 -output outputs/exp.txt \
 -replace_unk \
 -verbose
+-gpu 0
