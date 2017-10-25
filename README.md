@@ -78,10 +78,8 @@
 ### 步骤
 
 ```bash
-# 预处理数据，生成demo.train.pt, demo.vocab.pt, 
-python nmt/preprocess.py -train_src prepare/t2t_data/train.en -train_tgt prepare/t2t_data/train.zh -valid_src prepare/t2t_data/valid.en -valid_tgt prepare/t2t_data/valid.zh -save_data demo
-# 开始训练
-python nmt/train.py -data data/demo -save_model demo-model
+chmod 777 train_nmt.sh
+./train_nmt.sh
 ```
 **已忽略**，为作下一步示范，翻译输出保存至纯文本文件`outputs/ex1/out1`。
 
