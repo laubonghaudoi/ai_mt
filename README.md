@@ -37,22 +37,24 @@
     cd prepare
     # 更改读写权限，防止出现Permission dennied错误
     chmod 777 prepare.sh
-    chmod 777 ./prepare_data/tokenizer.perl
+    chmod 777 ./prepare/tokenizer.perl
     # 预处理数据
     ./prepare.sh
     # 此脚本在i5 4300上运行时间约为10分钟。执行完毕后数据存放于`./prepare/t2t_data`
     ```
     `prepare.sh`原理解释如下：
-    1. 运行`./train/prepare_data/unwrap_xml.py`去除验证集中xml代码，保存至`valid.en-zh.en`和`valid.en-zh.zh`
-    1. 运行`./train/prepare_data/jieba_cws.py`将中文训练集和验证集分词并保存至`train.zh`和`valid.zh`
-    1. 运行`./train/prepare_data/tokenizer.perl`将英文训练集和验证集tokenize并保存至`train.en`和`valid.en`
-    1. 运行`./train/prepare_data/build_dictionary.py`建立中英文训练集词表并保存至`vocab.en`和`vocab.zh`
-    1. 运行`./train/prepare_data/generate_vocab_from_json.py`去除训练集中低频词
-1. 预处理完毕后，`./prepare`路径如下：
+    1. 运行`./prepare/unwrap_xml.py`去除验证集中xml代码，保存至`valid.en-zh.en`和`valid.en-zh.zh`
+    1. 运行`./prepare/jieba_cws.py`将中文训练集和验证集分词并保存至`train.zh`和`valid.zh`
+    1. 运行`./prepare/tokenizer.perl`将英文训练集和验证集tokenize并保存至`train.en`和`valid.en`
+    1. 运行`./prepare/build_dictionary.py`建立中英文训练集词表并保存至`vocab.en`和`vocab.zh`
+    1. 运行`./prepare/generate_vocab_from_json.py`去除训练集中低频词
+1. 预处理完毕后，当前路径文件结构如下：
     ```bash
-    prepare_data/
+    prepare/
         ...
-    t2t_data/
+    raw_data/
+        ...
+    tokenized_jieba_data/
         # 以下为预处理完毕后文件，可直接输入模型训练
         train.en    # tokenize后英文训练集
         train.zh    # 分词后中文训练集
@@ -60,13 +62,8 @@
         valid.zh    # 分词后中文验证集
         vocab.en    # 英文训练集词表
         vocab.zh    # 中文训练集词表
-        # 以下为临时文件，训练中不会用到
-        valid.en-zh.en  # 去除xml后中文验证集
-        valid.en-zh.zh  # 去除xml后英文验证集
-
     ```
 ## 训练模型
-
 
 训练流程全部运行于python 3.6环境，依赖包有
 
