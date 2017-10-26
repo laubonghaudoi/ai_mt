@@ -10,5 +10,4 @@
 ./tools/mteval-v11b.pl -s ./raw_data/translation_validation_20170912/valid.en-zh.en.sgm -r outputs/valid.en-zh.zh.seg.sgm \
 -t outputs/exp.seg.sgm -c > score/exp.bleu
 # 计算BLEU并打印
-python ./tools/mt-score-main.py -rs ./raw_data/translation_validation_20170912/valid.en-zh.zh.sgm \
--hs outputs/exp.sgm -ss ./raw_data/translation_validation_20170912/valid.en-zh.en.sgm --id exp | tee score/exp.score
+python ./tools/mt-score-main.py -rs ./raw_data/translation_validation_20170912/valid.en-zh.zh.sgm -hs outputs/exp.sgm -ss ./raw_data/translation_validation_20170912/valid.en-zh.en.sgm --id exp | tee score/exp.score
