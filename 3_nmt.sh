@@ -6,5 +6,7 @@ python nmt/train.py \
 -data dataset/cross_2 \
 -save_model ckpts/exp-model \
 -train_from ckpts/demo-model_acc_51.94_ppl_12.01_e4.pt \
+-batch_size 128 \
 -start_epoch 5 \
--gpuid 0
+-gpuid 0 \
+-report_every 100
