@@ -1,10 +1,10 @@
-# 运行基线模型并提交测试
+# AI Challenger 英中机器文本翻译
 
 ## 概述
 
 本文档介绍如何完整运行基线模型并提交至官网，获得成绩。全过程分三步：数据预处理、训练模型、测试提交。
 
-比赛官方验证脚本和基线模型地址为[AI_Challenger](https://github.com/AIChallenger/AI_Challenger)。经测试，其中的数据预处理代码，即`AI_Challenger/Baselines/translation_and_interpretation_baseline/train/prepare_data/*`可直接移植，数据提交代码亦可用。但训练模型代码`AI_Challenger/Baselines/translation_and_interpretation_baseline/train/run.sh`有bug无法运行。因此，训练代码使用[OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py)
+比赛官方验证脚本和基线模型地址为[AI_Challenger](https://github.com/AIChallenger/AI_Challenger)。经测试，其中的数据预处理代码，即`AI_Challenger/Baselines/translation_and_interpretation_baseline/train/prepare_data/*`可直接移植，数据提交代码亦可用。但训练模型代码`AI_Challenger/Baselines/translation_and_interpretation_baseline/train/run.sh`有bug无法运行。因此训练代码使用[OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py)
 
 ## 数据预处理
 
@@ -33,7 +33,7 @@
         ...
     ```
 1. 预处理数据，运行以下命令
-    ```
+    ```bash
     # 更改读写权限，防止出现Permission dennied错误
     chmod 777 prepare.sh
     # 预处理数据
@@ -181,7 +181,7 @@ chmod 777 3_nmt.sh
 
 再运行以下命令，即可输出预测文件至`outputs/exp.txt`
 
-```
+```bash
 chmod 777 ./4_output.sh
 ./4_output.sh
 ```
@@ -203,15 +203,22 @@ chmod 777 wrap.sh
 
 ### 验证
 
-现有基于英文验证集输出的中文预测文本文件`outputs/exp.txt`需要测得其BLEU值，
+现有基于英文验证集输出的中文预测文本文件`outputs/exp.txt`需要测得其BLEU值，可选择两种方法：直接输出BLEU值或生成NIST+BLEU详细报告。
+
+#### 直接输出BLEU值
+
+```bash
+chmod 777 bleu.sh
+# 将`outputs/exp.txt`打包为`outputs/exp.sgm`，验证打印BLEU值
+./bleu.sh
+```
+
+#### 生成NIST+BLEU详细报告
 
 ```bash
 chmod 777 validate.sh
+# 1. 将`outputs/exp.txt`打包为`outputs/exp.sgm`
+# 2. 将预测输出及中文验证集单字分割得`outputs/exp.seg.sgm`和`outputs/valid.seg.sgm`
+# 3。输出NIST+BLEU报告`score/exp.bleu`
 ./validate.sh
 ```
-
-`validate.sh`原理解释如下：
-
-1. 运行`./tools/wrap_xml.pl`将纯文本翻译输出`out1`转为`out1.sgm`
-1. 运行`./tools/chi_char_segment.pl`将`out1.sgm`和`valid.en-zh.zh.sgm`分割为`out1.seg.sgm`和`valid.en-zh.zh.seg.sgm`，用于下一步计算BLEU
-1. 运行`./tools/mteval-v11b.pl`计算BLEU，输出结果`./score/out1.bleu`
