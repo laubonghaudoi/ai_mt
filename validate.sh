@@ -1,9 +1,5 @@
 #! /bin/sh
 
-# 将纯文本`exp`转为`exp.sgm`
-# exp 可更改为本次实验名
-./tools/wrap_xml.pl zh ./raw_data/translation_validation_20170912/valid.en-zh.en.sgm exp < outputs/exp.txt > outputs/exp.sgm
-
 # 单字分割
 # 将exp.sgm分割为exp.seg.sgm
 ./tools/chi_char_segment.pl -t xml < outputs/exp.sgm > outputs/exp.seg.sgm

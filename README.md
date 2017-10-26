@@ -179,31 +179,31 @@ chmod 777 3_nmt.sh
 -output # 预测文本输出路径，outputs/exp.txt
 ```
 
-运行以下命令，即可输出预测文件
+再运行以下命令，即可输出预测文件至`outputs/exp.txt`
 
 ```
 chmod 777 ./4_output.sh
 ./4_output.sh
 ```
 
-## 测试提交
+## 验证及提交
 
 本部分全部运行于python 2.7和perl 5环境。
 
-现有上一步中得到的预测文本文件`outputs/exp.txt`。为作示范，现有一次实验结果`outputs/`，内含文件：
+### 提交预测
+
+现有上一步中得到的预测文本文件`outputs/exp.txt`，由于竞赛要求提交文件为xml格式，故运行以下命令：
 
 ```bash
-outputs/ex1/
-    out1    # 翻译后纯文本文件
-    valid.en-zh.zh.sgm  # 中文参考翻译文件（标签）
-    valid.en-zh.en.sgm  # 英文源文件
+chmod 777 wrap.sh
+./wrap.sh
 ```
 
-现须输出可提交文件`./outputs/ex1/out1.sgm`和分数`./score/out1.score`
+即可在`uploads/`文件夹下输出`exp.sgm`文件，用于提交至竞赛官网。
 
-### 步骤
+### 验证
 
-直接运行以下代码，即可输出测试结果`./score/out1.bleu`，提交文件即为`out1.sgm`
+现有基于英文验证集输出的中文预测文本文件`outputs/exp.txt`需要测得其BLEU值，
 
 ```bash
 chmod 777 validate.sh
@@ -215,5 +215,3 @@ chmod 777 validate.sh
 1. 运行`./tools/wrap_xml.pl`将纯文本翻译输出`out1`转为`out1.sgm`
 1. 运行`./tools/chi_char_segment.pl`将`out1.sgm`和`valid.en-zh.zh.sgm`分割为`out1.seg.sgm`和`valid.en-zh.zh.seg.sgm`，用于下一步计算BLEU
 1. 运行`./tools/mteval-v11b.pl`计算BLEU，输出结果`./score/out1.bleu`
-
-注意以上代码仅作示范，在正式实验时需修改`validate.sh`中的输出路径和实验名再运行
