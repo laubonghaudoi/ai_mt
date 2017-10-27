@@ -75,8 +75,9 @@
 
 #### 1. 构建Dataset对象
 
+运行以下代码，即可在`dataset/`中生成三个文件`exp.train.pt`、`exp.valid.pt`、`exp.vocab.pt`，用于下一步训练。
+
 ```bash
-# 读取预处理后纯文本文件，构造Dataset对象并保存至`dataset/`
 chmod 777 2_preprocess.sh
 # 注意，此步骤有可能爆内存，可将`train.en`削减一半以避免
 ./2_preprocess.sh
@@ -110,9 +111,11 @@ chmod 777 2_preprocess.sh
 
 #### 2. 开始训练
 
+直接运行以下代码：
+
 ```bash
-# 使用默认参数训练
 chmod 777 3_nmt.sh
+# 使用默认参数训练
 ./3_nmt.sh
 ```
 
@@ -174,7 +177,7 @@ chmod 777 3_nmt.sh
 训练完毕后，得到保存的模型`ckpts/demo-model_acc_x_ppl_x_e4x.pt`。修改`4_output.sh`中的以下参数：
 
 ```bash
--model # 要预测的模型名，demo-model_acc_x_ppl_x_e4x.pt
+-model # 要预测的模型名，demo-model_acc_x_ppl_x_ex.pt
 -src # 源文本，tokenized_jieba_data/test_a.en或tokenized_jieba_data/valid.en
 -output # 预测文本输出路径，outputs/exp.txt
 ```
