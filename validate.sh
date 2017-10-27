@@ -9,4 +9,4 @@
 ./tools/chi_char_segment.pl -t xml < ./raw_data/translation_validation_20170912/valid.en-zh.zh.sgm > outputs/valid.seg.sgm
 
 # 计算BLEU，输出至score/exp.bleu
-./tools/mteval-v11b.pl -s ./raw_data/translation_validation_20170912/valid.en-zh.en.sgm -r outputs/valid.seg.sgm -t outputs/exp.seg.sgm -c > score/exp.bleu
+./tools/mteval-v11b.pl -s ./raw_data/translation_validation_20170912/valid.en-zh.en.sgm -r outputs/valid.seg.sgm -t outputs/exp.seg.sgm -c > outputs/exp.bleu
