@@ -4,6 +4,7 @@
 
 本文档介绍如何完整运行基线模型并提交至官网，获得成绩。全过程分三步：数据预处理、训练模型、测试提交。
 
+
 比赛官方验证脚本和基线模型地址为[AI_Challenger](https://github.com/AIChallenger/AI_Challenger)。经测试，其中的数据预处理代码，即`AI_Challenger/Baselines/translation_and_interpretation_baseline/train/prepare_data/*`可直接移植，数据提交代码亦可用。但训练模型代码`AI_Challenger/Baselines/translation_and_interpretation_baseline/train/run.sh`有bug无法运行。因此训练代码使用[OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py)
 
 ## 数据预处理
@@ -15,6 +16,7 @@
 ### 步骤
 
 1. 从官网下载训练集`ai_challenger_translation_train_20170912.zip`及验证集`ai_challenger_translation_validation_20170912.zip`。然后解压并复制至目录如下
+
     ```bash
     /raw_data
         /ai_challenger_translation_train_20170912
@@ -225,3 +227,50 @@ chmod 777 validate.sh
 # 3。输出NIST+BLEU报告`score/exp.bleu`
 ./validate.sh
 ```
+
+## 训练模型
+
+
+训练流程全部运行于python 3.6环境，依赖包有
+
+- pytorch
+- fairseq
+
+安装过程见
+[From Source](https://github.com/pytorch/pytorch#from-source)
+[Requirements and Installation](https://github.com/facebookresearch/fairseq-py#requirements-and-installation)
+
+### 步骤
+
+**已忽略**，为作下一步示范，翻译输出保存至纯文本文件`outputs/ex1/out1`。
+
+## 测试提交
+
+本部分全部运行于python 2.7和perl 5环境。
+
+每次实验结果均保存于`./outputs/`。为作示范，现有一次实验结果`outputs/ex1/`，内含文件：
+
+```bash
+outputs/ex1/
+    out1    # 翻译后纯文本文件
+    valid.en-zh.zh.sgm  # 中文参考翻译文件（标签）
+    valid.en-zh.en.sgm  # 英文源文件 
+```
+
+现须输出可提交文件`./outputs/ex1/out1.sgm`和分数`./score/out1.score`
+
+### 步骤
+
+直接运行以下代码，即可输出测试结果`./score/out1.bleu`，提交文件即为`out1.sgm`
+```bash
+chmod 777 validate.sh
+./validate.sh
+```
+
+`validate.sh`原理解释如下：
+
+1. 运行`./tools/wrap_xml.pl`将纯文本翻译输出`out1`转为`out1.sgm`
+1. 运行`./tools/chi_char_segment.pl`将`out1.sgm`和`valid.en-zh.zh.sgm`分割为`out1.seg.sgm`和`valid.en-zh.zh.seg.sgm`，用于下一步计算BLEU
+1. 运行`./tools/mteval-v11b.pl`计算BLEU，输出结果`./score/out1.bleu`
+
+注意以上代码仅作示范，在正式实验时需修改`validate.sh`中的输出路径和实验名再运行
