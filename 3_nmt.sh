@@ -3,11 +3,8 @@
 # Step 2:
 # Start training. Models are saved as `exp-model_acc_X_ppl_X_eX.pt`
 python nmt/train.py \
--data dataset/exp \
--save_model ckpts/demo-model \
--train_from ckpts/demo-model_acc_53.97_ppl_9.92_e10.pt \
--batch_size 128 \
--start_epoch 11 \
+-data dataset/jieba_50000 \
+-save_model ckpts/adam_0.02 \
 -gpuid 0 \
--learning_rate 0.002 \
+-learning_rate 0.02 \
 -report_every 100
